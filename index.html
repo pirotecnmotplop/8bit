@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>CC Music Downloader</title>
+  </head>
+  <body>
+    <input id="q" placeholder="Buscar..." />
+    <button onclick="search()">Buscar</button>
+    <div id="results"></div>
+
+    <script>
+      async function search() {
+        const q = document.getElementById('q').value;
+        const res = await fetch(`/search?q=${encodeURIComponent(q)}`).then(
+          (r) => r.json()
+        );
+        const div = document.getElementById('results');
+        div.innerHTML = '';
+
+        res.videos.forEach((v) => {
+          const e = document.createElement('div');
+          e.innerHTML = `<strong>${v.title}</strong> (YouTube CC) <button onclick="playYT('${v.id}')">Ouvir</button>`;
+          div.appendChild(e);
+        });
+
+        res.tracks.forEach((t) => {
+          const e = document.createElement('div');
+          e.innerHTML = `<strong>${t.title} – ${t.artist}</strong> (Jamendo) 
+    <button onclick="playUrl('${t.audioUrl}')">Ouvir</button>
+    <a href="${t.audioUrl}" download>Baixar MP3</a>`;
+          div.appendChild(e);
+        });
+      }
+
+      function playYT(id) {
+        window.open(`https://www.youtube.com/watch?v=${id}`, '_blank');
+      }
+      function playUrl(url) {
+        new Audio(url).play();
+      }
+    </script>
+  </body>
+</html>
