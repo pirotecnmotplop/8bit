@@ -2,7 +2,7 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
 const sprite = new Image();
-sprite.src = 'assets/boy_duck.png';
+sprite.src = 'js.png;
 sprite.onload = () => {
   requestAnimationFrame(gameLoop);
 };
